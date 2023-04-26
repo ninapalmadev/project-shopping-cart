@@ -37,5 +37,4 @@ const loadProducts = async () => {
   }
   removeLoading();
 };
-
 loadProducts();

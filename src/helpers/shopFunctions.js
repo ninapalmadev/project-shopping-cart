@@ -1,4 +1,5 @@
-import { removeCartID } from './cartFunctions';
+import { removeCartID, saveCartID } from './cartFunctions';
+import { fetchProduct } from './fetchFunctions';
 
 // Esses comentários que estão antes de cada uma das funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições!
@@ -91,6 +92,16 @@ export const createCartProductElement = ({ id, title, price, pictures }) => {
   return li;
 };
 
+// Requisito 8 - função para adicionar ao carrinho
+const addCart = async (id) => {
+  const productData = await fetchProduct(id);
+  const li = createCartProductElement(productData);
+  const ol = document.querySelector('.cart__products');
+  ol.appendChild(li);
+  // console.log(ol);
+  // console.log(li);
+};
+
 /**
  * Função responsável por criar e retornar o elemento do produto.
  * @param {Object} product - Objeto do produto.
@@ -122,6 +133,12 @@ export const createProductElement = ({ id, title, thumbnail, price }) => {
     'Adicionar ao carrinho!',
   );
   section.appendChild(cartButton);
+
+  // Requisito 8 - chama a função addCart
+  cartButton.addEventListener('click', async () => {
+    saveCartID(id);
+    addCart(id);
+  });
 
   return section;
 };
