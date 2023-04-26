@@ -22,12 +22,19 @@ const removeLoading = () => {
 // Requisito 3
 const loadProducts = async () => {
   putLoading();
-  const listProducts = await fetchProductsList('computador');
-  // console.log(listProducts);
-  listProducts.forEach((product) => {
-    const item = createProductElement(product);
-    sectionProducts.appendChild(item);
-  });
+  try {
+    const listProducts = await fetchProductsList('computador');
+    // console.log(listProducts);
+    listProducts.forEach((product) => {
+      const item = createProductElement(product);
+      sectionProducts.appendChild(item);
+    });
+  } catch {
+    const span = document.createElement('span');
+    span.innerText = 'Algum erro ocorreu, recarregue a página e tente novamente';
+    span.classList.add('error');
+    sectionProducts.appendChild(span);
+  }
   removeLoading();
 };
 
