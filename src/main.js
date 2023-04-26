@@ -1,6 +1,7 @@
+import { getSavedCartIDs } from './helpers/cartFunctions';
 import { searchCep } from './helpers/cepFunctions';
-import { fetchProductsList } from './helpers/fetchFunctions';
-import { createProductElement } from './helpers/shopFunctions';
+import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
+import { createCartProductElement, createProductElement } from './helpers/shopFunctions';
 import './style.css';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
@@ -38,3 +39,17 @@ const loadProducts = async () => {
   removeLoading();
 };
 loadProducts();
+
+// Requisito 9
+const getProductsSaved = () => {
+  const productsSaved = getSavedCartIDs();
+  const productMap = productsSaved.map((product) => fetchProduct(product));
+  Promise.all(productMap)
+    .then((data) => data.forEach((product) => {
+      const li = createCartProductElement(product);
+      const ol = document.querySelector('.cart__products');
+      ol.appendChild(li);
+    }));
+  // console.log(productsSaved);
+};
+getProductsSaved();
