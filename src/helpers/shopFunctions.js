@@ -18,6 +18,19 @@ const createProductImageElement = (imageSource) => {
   return img;
 };
 
+// Requisito 10
+export const getPrices = () => {
+  const totalPrice = document.querySelector('.total-price');
+  const productsPrice = document.querySelectorAll('.cart .product__price__value');
+  // console.log(productsPrice);
+  // console.log(totalPrice);
+  let total = 0;
+  productsPrice.forEach((product) => {
+    total += Number(product.innerHTML);
+  });
+  totalPrice.innerHTML = total.toFixed(2);
+};
+
 /**
  * Função responsável por criar e retornar qualquer elemento.
  * @param {string} element - Nome do elemento a ser criado.
@@ -49,6 +62,8 @@ export const getIdFromProduct = (product) => (
 const removeCartProduct = (li, id) => {
   li.remove();
   removeCartID(id);
+  // Requisito 10
+  getPrices();
 };
 
 /**
@@ -100,6 +115,8 @@ const addCart = async (id) => {
   ol.appendChild(li);
   // console.log(ol);
   // console.log(li);
+  // Requisito 10
+  getPrices();
 };
 
 /**
@@ -138,6 +155,7 @@ export const createProductElement = ({ id, title, thumbnail, price }) => {
   cartButton.addEventListener('click', async () => {
     saveCartID(id);
     addCart(id);
+    getPrices();
   });
 
   return section;

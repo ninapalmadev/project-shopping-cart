@@ -1,7 +1,8 @@
 import { getSavedCartIDs } from './helpers/cartFunctions';
 import { searchCep } from './helpers/cepFunctions';
 import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
-import { createCartProductElement, createProductElement } from './helpers/shopFunctions';
+import { createCartProductElement, createProductElement, getPrices }
+  from './helpers/shopFunctions';
 import './style.css';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
@@ -30,6 +31,7 @@ const loadProducts = async () => {
       const item = createProductElement(product);
       sectionProducts.appendChild(item);
     });
+    getPrices();
   } catch {
     const span = document.createElement('span');
     span.innerText = 'Algum erro ocorreu, recarregue a página e tente novamente';
@@ -38,7 +40,6 @@ const loadProducts = async () => {
   }
   removeLoading();
 };
-loadProducts();
 
 // Requisito 9
 const getProductsSaved = () => {
@@ -49,7 +50,12 @@ const getProductsSaved = () => {
       const li = createCartProductElement(product);
       const ol = document.querySelector('.cart__products');
       ol.appendChild(li);
+      getPrices();
     }));
   // console.log(productsSaved);
 };
-getProductsSaved();
+
+window.onload = () => {
+  loadProducts();
+  getProductsSaved();
+};
